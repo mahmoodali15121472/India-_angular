@@ -1,0 +1,66 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//Shareecareroles object create
+var Shareecareroles = function(shareecareroles){
+  this.roleID      = shareecareroles.roleID;
+  this.rolename      = shareecareroles.rolename;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+Shareecareroles.create = function (newEmp, result) {
+dbConn.query("INSERT INTO shareecareroles set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+Shareecareroles.findById = function (id, result) {
+dbConn.query("Select * from shareecareroles where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+Shareecareroles.findAll = function (result) {
+dbConn.query("Select * from shareecareroles", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('shareecareroles : ', res);
+  result(null, res);
+}
+});
+};
+Shareecareroles.update = function(id, shareecareroles , result){
+dbConn.query("UPDATE shareecareroles SrolET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [shareecareroles.first_name,shareecareroles.last_name,shareecareroles.email,shareecareroles.phone,shareecareroles.organization,shareecareroles.designation,shareecareroles.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+Shareecareroles.delete = function(id, result){
+dbConn.query("DELETE FROM shareecareroles WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= Shareecareroles;

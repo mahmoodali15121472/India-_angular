@@ -1,0 +1,73 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//Employee object create
+var bankingdetail = function(bankingdetail){
+  this.bankdetailsid      = bankingdetail.bankdetailsid;
+  this.accountnumber      = bankingdetail.accountnumber;
+  this.bankname           = bankingdetail.bankname;
+  this.bankifsccode       = bankingdetail.bankifsccode;
+  this.bankbranch         = bankingdetail.bankbranch;
+  this.bankbranchcityid   = bankingdetail.bankbranchcityid;
+  this.bankbranchstate    = bankingdetail.bankbranchstateid;
+  this.bankbranchemail    = bankingdetail.bankbranchemail;
+  this.shareecareuserid   = bankingdetail.shareecareuserid;
+  this.created_at         = new Date();
+  this.updated_at         = new Date();
+};
+Bankingdetail.create = function (newEmp, result) {
+dbConn.query("INSERT INTO bankingdetail set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+Bankingdetail.findById = function (id, result) {
+dbConn.query("Select * from bankingdetail where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+Bankingdetail.findAll = function (result) {
+dbConn.query("Select * from bankingdetail", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('bankingdetail : ', res);
+  result(null, res);
+}
+});
+};
+Bankingdetail.update = function(id, bankingdetail, result){
+dbConn.query("UPDATE bankingdetail SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [bankingdetail.first_name,bankingdetail.last_name,bankingdetail.email,bankingdetail.phone,bankingdetail.organization,bankingdetail.designation,bankingdetail.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+Bankingdetail.delete = function(id, result){
+dbConn.query("DELETE FROM bankingdetail WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= Bankingdetail;

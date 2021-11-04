@@ -1,0 +1,71 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//Reportssharedwith object create
+var Reportssharedwith = function(reportssharedwith){
+  this.rsharedid      = reportssharedwith.rsharedid;
+  this.pid            = reportssharedwith.pid;
+  this.did            = reportssharedwith.did;
+  this.status         = reportssharedwith.status;
+  this.planname       = reportssharedwith.planname;
+  this.planprice      = reportssharedwith.planprice;
+  this.planadmincom   = reportssharedwith.planadmincom;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+Reportssharedwith.create = function (newEmp, result) {
+dbConn.query("INSERT INTO reportssharedwith set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+Reportssharedwith.findById = function (id, result) {
+dbConn.query("Select * from reportssharedwith where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+Reportssharedwith.findAll = function (result) {
+dbConn.query("Select * from reportssharedwith", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('reportssharedwith : ', res);
+  result(null, res);
+}
+});
+};
+Reportssharedwith.update = function(id, reportssharedwith, result){
+dbConn.query("UPDATE reportssharedwith SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [reportssharedwith.first_name,reportssharedwith.last_name,reportssharedwith.email,reportssharedwith.phone,reportssharedwith.organization,reportssharedwith.designation,reportssharedwith.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+Reportssharedwith.delete = function(id, result){
+dbConn.query("DELETE FROM reportssharedwith WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= Reportssharedwith;

@@ -1,0 +1,68 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//Sharedreports object create
+var sharedreports = function(sharedreports){
+  this.shresreportsid    = sharedreports.shresreportsid;
+  this.sharedid          = sharedreports.sharedid;
+  this.reportid          = sharedreports.reportid;
+  this.review            = sharedreports.review;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+sharedreports.create = function (newEmp, result) {
+dbConn.query("INSERT INTO sharedreports set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+sharedreports.findById = function (id, result) {
+dbConn.query("Select * from sharedreports where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+sharedreports.findAll = function (result) {
+dbConn.query("Select * from sharedreports", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('sharedreports : ', res);
+  result(null, res);
+}
+});
+};
+sharedreports.update = function(id, sharedreports, result){
+dbConn.query("UPDATE sharedreports SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [sharedreports.first_name,sharedreports.last_name,sharedreports.email,sharedreports.phone,sharedreports.organization,sharedreports.designation,sharedreports.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+sharedreports.delete = function(id, result){
+dbConn.query("DELETE FROM sharedreports WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= sharedreports;

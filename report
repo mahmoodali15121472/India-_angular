@@ -1,0 +1,72 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//Report object create
+var Report = function(report){
+  this.reportid        = report.reportid;
+  this.canShowNow      = report.canShowNow;
+  this.created_date    = report.created_date;
+  this.patient_id      = report.patient_id;
+  this.reportFiles     = report.reportFiles;
+  this.path            = report.path;
+  this.testName        = report.testName;
+  this.isshared        = report.isshared;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+Report.create = function (newEmp, result) {
+dbConn.query("INSERT INTO report set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+Report.findById = function (id, result) {
+dbConn.query("Select * from report where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+Report.findAll = function (result) {
+dbConn.query("Select * from report", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('report : ', res);
+  result(null, res);
+}
+});
+};
+Report.update = function(id, report, result){
+dbConn.query("UPDATE report SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [report.first_name,report.last_name,report.email,report.phone,report.organization,report.designation,report.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+Report.delete = function(id, result){
+dbConn.query("DELETE FROM report WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= Report;

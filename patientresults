@@ -1,0 +1,76 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//Patientresults object create
+var Patientresults = function(patientresults){
+  this.patientresultsid     = patientresults.patientresultsid;
+  this.created_date         = patientresults.created_date;
+  this.patient_id           = patientresults.patient_id;
+  this.procedure            = patientresults.procedure;
+  this.procedure_id         = patientresults.procedure_id;
+  this.reportfile           = patientresults.reportfile;
+  this.name                 = patientresults.name;
+  this.path                 = patientresults.path; 
+  this.sharedwithDrsCount   = patientresults.sharedwithDrsCount;
+  this.subprocedure         = patientresults.subprocedure;
+  this.subprocedure_id      = patientresults.subprocedure_id;
+  this.testname             = patientresults.testname;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+Patientresults.create = function (newEmp, result) {
+dbConn.query("INSERT INTO patientresults set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+Patientresults.findById = function (id, result) {
+dbConn.query("Select * from patientresults where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+Patientresults.findAll = function (result) {
+dbConn.query("Select * from  patientresults", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('patientresults : ', res);
+  result(null, res);
+}
+});
+};
+Patientresults.update = function(id, patientresults, result){
+dbConn.query("UPDATE patientresults SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [patientresults.first_name,patientresults.last_name,patientresults.email,patientresults.phone,patientresults.organization,patientresults.designation,patientresults.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+Patientresults.delete = function(id, result){
+dbConn.query("DELETE FROM patientresults WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= Patientresults;

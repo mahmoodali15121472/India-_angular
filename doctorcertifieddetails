@@ -1,0 +1,75 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+const doctorcertifieddetails = require('./doctorcertifieddetail');
+//doctoecertifieddetail object create
+var doctorcertifieddetails = function(doctorcertifieddetails){
+  this.doctorcertifieddetailsid    = doctorcertifieddetails.doctorcertifieddetailsid;
+  this.qualification               = doctorcertifieddetails.qualification;
+  this.qualifiedyear               = doctorcertifieddetails.qualifiedyaer;
+  this.regdate                     = doctorcertifieddetails.regdate;
+  this.specialityid                = doctorcertifieddetails.specialityid;
+  this.statemedcouncilid           = doctorcertifieddetails.statemedcouncilid;
+  this.stateregnumber              = doctorcertifieddetails.stateregnumber;
+  this.universityname              = doctorcertifieddetails.universityname;
+  this.shareecareuserid            = doctorcertifieddetails.shareecareuserid;
+  this.apporved                    = doctorcertifieddetails.apporved;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+doctorcertifieddetails.create = function (newEmp, result) {
+dbConn.query("INSERT INTO doctorcertifieddetails set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+doctorcertifieddetails.findById = function (id, result) {
+dbConn.query("Select * from doctorcertifieddetails where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+doctorcertifieddetails.findAll = function (result) {
+dbConn.query("Select * from doctorcertifieddetails", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('doctorcertifieddetails : ', res);
+  result(null, res);
+}
+});
+};
+doctorcertifieddetails.update = function(id, doctorcertifieddetail, result){
+dbConn.query("UPDATE doctorcertifieddetails SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [doctorcertifieddetail.first_name,doctorcertifieddetail.last_name,doctorcertifieddetail.email,doctorcertifieddetail.phone,doctorcertifieddetail.organization,doctorcertifieddetail.designation,doctorcertifieddetail.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+doctorcertifieddetails.delete = function(id, result){
+dbConn.query("DELETE FROM doctorcertifieddetails WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= doctorcertifieddetails;

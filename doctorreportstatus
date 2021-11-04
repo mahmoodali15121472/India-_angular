@@ -1,0 +1,69 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//doctorreportstatus object create
+var doctorreportstatus = function(doctorreportstatus){
+  this.doctorreportstatusid    = doctorreportstatus.doctorreportstatusid;
+  this.status                  = doctorreportstatus.status;
+  this.email          = doctorreportstatus.email;
+  this.phone          = doctorreportstatus.phone;
+  this.status         = doctorreportstatus.status ? doctorreportstatus.status : 1;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+doctorreportstatus.create = function (newEmp, result) {
+dbConn.query("INSERT INTO doctorreportstatus set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+doctorreportstatus.findById = function (id, result) {
+dbConn.query("Select * from doctorreportstatus where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+doctorreportstatus.findAll = function (result) {
+dbConn.query("Select * from doctorreportstatus", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('doctorreportstatus : ', res);
+  result(null, res);
+}
+});
+};
+doctorreportstatus.update = function(id, doctorreportstatus, result){
+dbConn.query("UPDATE doctorreportstatus SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [doctorreportstatus.first_name,doctorreportstatus.last_name,doctorreportstatus.email,doctorreportstatus.phone,doctorreportstatus.organization,doctorreportstatus.designation,doctorreportstatus.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+doctorreportstatus.delete = function(id, result){
+dbConn.query("DELETE FROM DOCTORREPORTSTATUS WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= doctorreportstatus;

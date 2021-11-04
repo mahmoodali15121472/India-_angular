@@ -1,0 +1,69 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//Shareecarechats object create
+var Shareecarechats = function(shareecarechats){
+  this.chatid            = shareecarechats.chatid;
+  this.chatdatetime      = shareecarechats.chatdatetime;
+  this.message           = shareecarechats.message;
+  this.fromid            = shareecarechats.fromid;
+  this.toid              = shareecarechats.toid;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+Shareecarechats.create = function (newEmp, result) {
+dbConn.query("INSERT INTO shareecarechats set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+Shareecarechats.findById = function (id, result) {
+dbConn.query("Select * from shareecarechats where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+Shareecarechats.findAll = function (result) {
+dbConn.query("Select * from shareecarechats", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('shareecarechats : ', res);
+  result(null, res);
+}
+});
+};
+Shareecarechats.update = function(id, shareecarechats, result){
+dbConn.query("UPDATE shareecarechats SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [shareecarechats.first_name,shareecarechats.last_name,shareecarechats.email,shareecarechats.phone,shareecarechats.organization,shareecarechats.designation,shareecarechats.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+Shareecarechats.delete = function(id, result){
+dbConn.query("DELETE FROM shareecarechats WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= Shareecarechats;

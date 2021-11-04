@@ -1,0 +1,69 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//Patientplansubcription object create
+var patientplansubcription = function(patientplansubcription){
+  this.idshareecareplan     = patientplansubcription.idshareecareplan;
+  this.pid                  = patientplansubcription.pid;
+  this.shareecareplanid     = patientplansubcription.shareecareplanid;
+  this.expiry               = patientplansubcription.expiry;
+  this.created              = patientplansubcription.created;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+patientplansubcription.create = function (newEmp, result) {
+dbConn.query("INSERT INTO patientplansubcription set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+patientplansubcription.findById = function (id, result) {
+dbConn.query("Select * from patientplansubcription where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+patientplansubcription.findAll = function (result) {
+dbConn.query("Select * from patientplansubcription", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('patientplansubcription : ', res);
+  result(null, res);
+}
+});
+};
+patientplansubcription.update = function(id, patientplansubcription, result){
+dbConn.query("UPDATE patientplansubcription SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [patientplansubcription.first_name,patientplansubcription.last_name,patientplansubcription.email,patientplansubcription.phone,patientplansubcription.organization,patientplansubcription.designation,patientplansubcription.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+patientplansubcription.delete = function(id, result){
+dbConn.query("DELETE FROM patientplansubcription WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= patientplansubcription;

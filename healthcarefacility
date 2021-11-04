@@ -1,0 +1,88 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//Healthcarefacility object create
+var healthcarefacility     = function(healthcarefacility){
+  this.hcfid               = healthcarefacility.hcfid;
+  this.canlogin            = healthcarefacility.canlogin;
+  this.categories          = healthcarefacility.categories;
+  this.cityid              = healthcarefacility.cityid;
+  this.companyname         = healthcarefacility.companyname;
+  this.docid               = healthcarefacility.docid;
+  this.doingbusinessAs     = healthcarefacility.doingbusinessAs;
+  this.email               = healthcarefacility.email;
+  this.faxno               = healthcarefacility.faxno;
+  this.homeno              = healthcarefacility.homeno;
+  this.image               = healthcarefacility.image;
+  this.licenseNo           = healthcarefacility.licenseNo;
+  this.mobileNo            = healthcarefacility.mobileNo;
+  this.countrycode         = healthcarefacility.countrycode;
+  this.dialcode            = healthcarefacility.dialcode;
+  this.internationalnumber = healthcarefacility.internationalnumber;
+  this.nationalnumber      = healthcarefacility.nationalnumber;
+  this.number              = healthcarefacility.number;
+  this.stateid             = healthcarefacility.stateid;
+  this.streetAdress1       = healthcarefacility.streetAdress1;
+  this.streetAdress2       = healthcarefacility.streetAdress2;
+  this.termsAndcondition   = healthcarefacility.termsAndcondition;
+  this.workingHrs          = healthcarefacility.workingHrs;
+  this.zipcode             = healthcarefacility.zipcode;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+healthcarefacility.create = function (newEmp, result) {
+dbConn.query("INSERT INTO healthcarefacility set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+healthcarefacility.findById = function (id, result) {
+dbConn.query("Select * from healthcarefacility where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+healthcarefacility.findAll = function (result) {
+dbConn.query("Select * from healthcarefacility", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('healthcarefacility : ', res);
+  result(null, res);
+}
+});
+};
+healthcarefacility.update = function(id, healthcarefacility, result){
+dbConn.query("UPDATE healthcarefacility SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [healthcarefacility.first_name,healthcarefacility.last_name,healthcarefacility.email,healthcarefacility.phone,healthcarefacility.organization,healthcarefacility.designation,healthcarefacility.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+healthcarefacility.delete = function(id, result){
+dbConn.query("DELETE FROM healthcarefacility WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= healthcarefacility;

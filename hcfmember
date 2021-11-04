@@ -1,0 +1,67 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//hcfmember object create
+var hcfmember = function(hcfmember){
+  this.hcfmemberid     = hcfmember.hcfmemberid;
+  this.hcfid           = hcfmember.hcfid;
+  this.userid          = hcfmember.userid;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+hcfmember.create = function (newEmp, result) {
+dbConn.query("INSERT INTO hcfmember set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+hcfmember.findById = function (id, result) {
+dbConn.query("Select * from hcfmember where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+hcfmember.findAll = function (result) {
+dbConn.query("Select * from hcfmember", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('hcfmember : ', res);
+  result(null, res);
+}
+});
+};
+hcfmember.update = function(id, hcfmember, result){
+dbConn.query("UPDATE hcfmember SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [hcfmember.first_name,hcfmember.last_name,hcfmember.email,hcfmember.phone,hcfmember.organization,hcfmember.designation,hcfmember.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+hcfmember.delete = function(id, result){
+dbConn.query("DELETE FROM hcfmember WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= hcfmember;

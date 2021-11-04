@@ -1,0 +1,84 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//Shareecareuser object create
+var Shareecareuser = function(shareecareuser){
+  this.suid           = shareecareuser.suid;
+  this.roleid         = shareecareuser.roleid;
+  this.firstname      = shareecareuser.firstname;
+  this.lastname       = shareecareuser.lastname;
+  this.middlename     = shareecareuser.middlename;
+  this.canlogin       = shareecareuser.canlogin;
+  this.email          = shareecareuser.email;
+  this.countrycode          = shareecareuser.countrycode;
+  this.contactnoprimary   = shareecareuser.contactnoprimary;
+  this.contactnosecondary    = shareecareuser.contactnosecondary;
+  this.addedby         = shareecareuser.addedby;
+  this.gender         = shareecareuser.gender;
+  this.DOB            = shareecareuser.DOB;
+  this.areaname       = shareecareuser.areaname;
+  this.stateid        = shareecareuser.stateid;
+  this.cityid         = shareecareuser.cityid;
+  this.areaid         = shareecareuser.areaid;
+  this.streetaddress1  = shareecareuser.streetaddress1;
+  this.streetaddress2  = shareecareuser.streetaddress2;
+  this.homeno         = shareecareuser.homeno;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+Shareecareuser.create = function (newEmp, result) {
+dbConn.query("INSERT INTO shareecareuser set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+Shareecareuser.findById = function (id, result) {
+dbConn.query("Select * from shareecareuser where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+Shareecareuser.findAll = function (result) {
+dbConn.query("Select * from shareecareuser", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('shareecareuser : ', res);
+  result(null, res);
+}
+});
+};
+Shareecareuser.update = function(id, shareecareuser, result){
+dbConn.query("UPDATE shareecareuser SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [shareecareuser.first_name,shareecareuser.last_name,shareecareuser.email,shareecareuser.phone,shareecareuser.organization,shareecareuser.designation,shareecareuser.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+Shareecareuser.delete = function(id, result){
+dbConn.query("DELETE FROM shareecareuser WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= Shareecareuser;

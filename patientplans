@@ -1,0 +1,70 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//Patientplans object create
+var Patientplans = function(patientplans){
+  this.shareecareplanid     = patientplans.shareecareplanid;
+  this.plandescription      = patientplans.plandescription;
+  this.planfee              = patientplans.planfee;
+  this.planname             = patientplans.planname;
+  this.stripeplanid         = patientplans.stripeplanid;
+  this.planduration        = patientplans.planduration;
+  this.created_at     = new Date();
+  this.updated_at     = new Date();
+};
+patientplans.create = function (newEmp, result) {
+dbConn.query("INSERT INTO patientplans set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+patientplans.findById = function (id, result) {
+dbConn.query("Select * from patientplans where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+patientplans.findAll = function (result) {
+dbConn.query("Select * from patientplans", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('patientplans : ', res);
+  result(null, res);
+}
+});
+};
+patientplans.update = function(id, patientplans, result){
+dbConn.query("UPDATE patientplans SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [patientplans.first_name,patientplans.last_name,patientplans.email,patientplans.phone,patientplans.organization,patientplans.designation,patientplans.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+patientplans.delete = function(id, result){
+dbConn.query("DELETE FROM patientplans WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= patientplans;

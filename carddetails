@@ -1,0 +1,70 @@
+'use strict';
+var dbConn = require('./../../config/db.config');
+//carddetail object create
+var carddetail = function(carddetail){
+  this.carddetailsid       = carddetails.carddetailsid;
+  this.cardno              = carddetails.cardno;
+  this.bankname            = carddetails.bankname;
+  this.expmonth            = carddetails.expmonth;
+  this.expyear             = carddetails.expyear;
+  this.shareecareuserid    = carddetails.shareecareuserid;
+  this.created_at          = new Date();
+  this.updated_at          = new Date();
+};
+carddetails.create = function (newEmp, result) {
+dbConn.query("INSERT INTO carddetails set ?", newEmp, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  console.log(res.insertId);
+  result(null, res.insertId);
+}
+});
+};
+carddetails.findById = function (id, result) {
+dbConn.query("Select * from carddetails where id = ? ", id, function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(err, null);
+}
+else{
+  result(null, res);
+}
+});
+};
+carddetails.findAll = function (result) {
+dbConn.query("Select * from carddetails", function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  console.log('carddetails : ', res);
+  result(null, res);
+}
+});
+};
+carddetails.update = function(id, carddetails, result){
+dbConn.query("UPDATE carddetails SET first_name=?,last_name=?,email=?,phone=?,organization=?,designation=?,salary=? WHERE id = ?", [carddetails.first_name,carddetails.last_name,carddetails.email,carddetails.phone,carddetails.organization,carddetails.designation,carddetails.salary, id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}else{
+  result(null, res);
+}
+});
+};
+carddetails.delete = function(id, result){
+dbConn.query("DELETE FROM carddetails WHERE id = ?", [id], function (err, res) {
+if(err) {
+  console.log("error: ", err);
+  result(null, err);
+}
+else{
+  result(null, res);
+}
+});
+};
+module.exports= carddetails;
